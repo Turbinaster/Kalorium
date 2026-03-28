@@ -9,11 +9,10 @@ import {
 } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
 import { InputField } from "@/components/ui/input-field";
-import { Section } from "@/components/ui/section";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { SelectField } from "@/components/ui/select-field";
+import { cn } from "@/lib/cn";
 import {
   activityOptions,
   calculatorFormContent,
@@ -37,6 +36,11 @@ type CalculatorContextValue = {
   hasCalculated: boolean;
   updateField: (field: keyof CalculatorFormValues, value: string) => void;
   handleSubmit: () => void;
+};
+
+type CalculatorFormCardProps = {
+  className?: string;
+  note?: string;
 };
 
 const initialValues: CalculatorFormValues = {
@@ -128,7 +132,7 @@ function SegmentedField({
   options: Array<{ label: string; value: string }>;
 }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex min-w-0 flex-col gap-2">
       <span className="body-sm-text font-medium text-text-primary">{label}</span>
       <SegmentedControl
         ariaLabel={label}
@@ -140,110 +144,93 @@ function SegmentedField({
   );
 }
 
-export function CalculatorFormSection() {
+export function CalculatorFormCard({
+  className,
+  note,
+}: CalculatorFormCardProps) {
   const { values, errors, updateField, handleSubmit } = useCalculatorContext();
 
   return (
-    <Section>
-      <Container>
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-start">
-          <div className="space-y-4">
-            <span className="caption-text inline-flex rounded-full bg-brand-soft px-3 py-1 text-brand-hover">
-              Интерактивный расчёт
-            </span>
-            <div className="space-y-3">
-              <h2 className="h2-text text-text-primary">{calculatorFormContent.title}</h2>
-              <p className="body-text text-text-secondary">{calculatorFormContent.intro}</p>
-            </div>
-          </div>
-
-          <form
-            className="soft-card rounded-[30px] p-6 md:p-8"
-            onSubmit={(event) => {
-              event.preventDefault();
-              handleSubmit();
-            }}
-          >
-            <div className="grid gap-5">
-              <div className="grid gap-5 md:grid-cols-2">
-                <SegmentedField
-                  label={calculatorFormContent.labels.sex}
-                  onChange={(nextValue) =>
-                    updateField("sex", nextValue as Sex)
-                  }
-                  options={sexOptions}
-                  value={values.sex}
-                />
-                <SegmentedField
-                  label={calculatorFormContent.labels.goal}
-                  onChange={(nextValue) =>
-                    updateField("goal", nextValue as Goal)
-                  }
-                  options={goalOptions}
-                  value={values.goal}
-                />
-                <InputField
-                  error={errors.age}
-                  id="calculator-age"
-                  inputMode="numeric"
-                  label={calculatorFormContent.labels.age}
-                  name="age"
-                  placeholder="Например, 29"
-                  type="number"
-                  value={values.age}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    updateField("age", event.target.value)
-                  }
-                />
-                <InputField
-                  error={errors.heightCm}
-                  id="calculator-height"
-                  inputMode="numeric"
-                  label={calculatorFormContent.labels.heightCm}
-                  name="heightCm"
-                  placeholder="Например, 168"
-                  type="number"
-                  value={values.heightCm}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    updateField("heightCm", event.target.value)
-                  }
-                />
-                <InputField
-                  error={errors.weightKg}
-                  id="calculator-weight"
-                  inputMode="decimal"
-                  label={calculatorFormContent.labels.weightKg}
-                  name="weightKg"
-                  placeholder="Например, 64.5"
-                  step="0.1"
-                  type="number"
-                  value={values.weightKg}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    updateField("weightKg", event.target.value)
-                  }
-                />
-                <SelectField
-                  id="calculator-activity"
-                  label={calculatorFormContent.labels.activity}
-                  name="activity"
-                  options={activityOptions}
-                  value={values.activity}
-                  onChange={(event) => updateField("activity", event.target.value)}
-                />
-              </div>
-
-              <div className="flex flex-col items-start gap-4">
-                <Button size="lg" type="submit">
-                  {calculatorFormContent.buttonLabel}
-                </Button>
-                <p className="body-sm-text max-w-2xl text-text-muted">
-                  {calculatorFormContent.helperText}
-                </p>
-              </div>
-            </div>
-          </form>
+    <form
+      className={cn("soft-card w-full rounded-[28px] p-4 sm:p-5 md:p-6", className)}
+      onSubmit={(event) => {
+        event.preventDefault();
+        handleSubmit();
+      }}
+    >
+      <div className="grid gap-5">
+        <div className="grid gap-5 md:grid-cols-2">
+          <SegmentedField
+            label={calculatorFormContent.labels.sex}
+            onChange={(nextValue) => updateField("sex", nextValue as Sex)}
+            options={sexOptions}
+            value={values.sex}
+          />
+          <SegmentedField
+            label={calculatorFormContent.labels.goal}
+            onChange={(nextValue) => updateField("goal", nextValue as Goal)}
+            options={goalOptions}
+            value={values.goal}
+          />
+          <InputField
+            error={errors.age}
+            id="calculator-age"
+            inputMode="numeric"
+            label={calculatorFormContent.labels.age}
+            name="age"
+            placeholder="Например, 29"
+            type="number"
+            value={values.age}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              updateField("age", event.target.value)
+            }
+          />
+          <InputField
+            error={errors.heightCm}
+            id="calculator-height"
+            inputMode="numeric"
+            label={calculatorFormContent.labels.heightCm}
+            name="heightCm"
+            placeholder="Например, 168"
+            type="number"
+            value={values.heightCm}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              updateField("heightCm", event.target.value)
+            }
+          />
+          <InputField
+            error={errors.weightKg}
+            id="calculator-weight"
+            inputMode="decimal"
+            label={calculatorFormContent.labels.weightKg}
+            name="weightKg"
+            placeholder="Например, 64.5"
+            step="0.1"
+            type="number"
+            value={values.weightKg}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              updateField("weightKg", event.target.value)
+            }
+          />
+          <SelectField
+            id="calculator-activity"
+            label={calculatorFormContent.labels.activity}
+            name="activity"
+            options={activityOptions}
+            value={values.activity}
+            onChange={(event) => updateField("activity", event.target.value)}
+          />
         </div>
-      </Container>
-    </Section>
+
+        <div className="flex flex-col items-start gap-4">
+          <Button size="lg" type="submit">
+            {calculatorFormContent.buttonLabel}
+          </Button>
+          {note ? (
+            <p className="body-sm-text max-w-2xl text-text-muted">{note}</p>
+          ) : null}
+        </div>
+      </div>
+    </form>
   );
 }

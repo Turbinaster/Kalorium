@@ -40,10 +40,13 @@ export function SegmentedControl({
     <div
       aria-label={ariaLabel}
       className={cn(
-        "inline-flex w-full rounded-2xl border border-border-soft bg-surface p-1",
+        "grid w-full min-w-0 gap-1 rounded-2xl border border-border-soft bg-surface p-1",
         className,
       )}
       role="group"
+      style={{
+        gridTemplateColumns: `repeat(${Math.max(options.length, 1)}, minmax(0, 1fr))`,
+      }}
     >
       {options.map((option) => {
         const active = internalValue === option.value;
@@ -53,7 +56,7 @@ export function SegmentedControl({
             key={option.value}
             aria-pressed={active}
             className={cn(
-              "min-h-10 flex-1 rounded-xl px-4 text-sm font-semibold transition-colors",
+              "min-h-10 min-w-0 rounded-xl px-2.5 py-2 text-center text-sm font-semibold leading-tight transition-colors sm:px-3.5",
               active
                 ? "bg-brand-primary text-white"
                 : "text-text-secondary hover:bg-brand-soft/70 hover:text-text-primary",

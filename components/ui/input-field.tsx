@@ -16,14 +16,14 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
     const describedBy = errorId ?? hintId;
 
     return (
-      <label className="flex flex-col gap-2" htmlFor={fieldId}>
+      <label className="flex min-w-0 flex-col gap-2" htmlFor={fieldId}>
         {label ? (
           <span className="body-sm-text font-medium text-text-primary">{label}</span>
         ) : null}
         <input
           ref={ref}
           className={cn(
-            "min-h-12 rounded-2xl border bg-surface px-4 text-text-primary placeholder:text-text-muted focus:outline-none",
+            "min-h-12 w-full min-w-0 rounded-2xl border bg-surface px-4 text-text-primary placeholder:text-text-muted focus:outline-none",
             error
               ? "border-red-300 focus:border-red-400"
               : "border-border-soft focus:border-brand-primary",

@@ -1,6 +1,7 @@
+import type { Metadata } from "next";
+
 import { CalculatorFaqSection } from "@/components/sections/calculator/calculator-faq-section";
 import {
-  CalculatorFormSection,
   CalculatorProvider,
 } from "@/components/sections/calculator/calculator-form-section";
 import { CalculatorHeroSection } from "@/components/sections/calculator/calculator-hero-section";
@@ -13,25 +14,38 @@ import { WhyDifferentSection } from "@/components/sections/calculator/why-differ
 import { WhyNotEnoughSection } from "@/components/sections/calculator/why-not-enough-section";
 import { JsonLd } from "@/components/seo/json-ld";
 import { CtaSection } from "@/components/ui/cta-section";
-import { calculatorFinalCta, calculatorHero } from "@/data/calculator";
+import { calculatorFinalCta } from "@/data/calculator";
 import { RUSTORE_URL } from "@/data/site";
 import { createMetadata } from "@/lib/seo";
 import { createBreadcrumbStructuredData } from "@/lib/structured-data";
 
-export const metadata = createMetadata("/calculator");
+const baseMetadata = createMetadata("/calculator");
+
+export const metadata: Metadata = {
+  ...baseMetadata,
+  title: "Калькулятор калорий онлайн — расчёт нормы калорий и КБЖУ | Калориум",
+  description:
+    "Калькулятор калорий онлайн: рассчитайте суточную норму калорий, КБЖУ, воду и клетчатку с учётом пола, возраста, роста, веса, активности и цели.",
+  openGraph: {
+    ...baseMetadata.openGraph,
+    title: "Калькулятор калорий онлайн — расчёт нормы калорий и КБЖУ | Калориум",
+    description:
+      "Калькулятор калорий онлайн: рассчитайте суточную норму калорий, КБЖУ, воду и клетчатку с учётом пола, возраста, роста, веса, активности и цели.",
+  },
+  twitter: {
+    ...baseMetadata.twitter,
+    title: "Калькулятор калорий онлайн — расчёт нормы калорий и КБЖУ | Калориум",
+    description:
+      "Калькулятор калорий онлайн: рассчитайте суточную норму калорий, КБЖУ, воду и клетчатку с учётом пола, возраста, роста, веса, активности и цели.",
+  },
+};
 
 export default function CalculatorPage() {
   return (
     <>
-      <JsonLd
-        data={createBreadcrumbStructuredData(
-          "/calculator",
-          calculatorHero.breadcrumbLabel,
-        )}
-      />
-      <CalculatorHeroSection />
+      <JsonLd data={createBreadcrumbStructuredData("/calculator", "Калькулятор калорий")} />
       <CalculatorProvider>
-        <CalculatorFormSection />
+        <CalculatorHeroSection />
         <CalculatorResultSection />
       </CalculatorProvider>
       <CalculationMethodSection />

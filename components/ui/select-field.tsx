@@ -26,11 +26,11 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
     const describedBy = errorId ?? hintId;
 
     return (
-      <label className="flex flex-col gap-2" htmlFor={fieldId}>
+      <label className="flex min-w-0 flex-col gap-2" htmlFor={fieldId}>
         {label ? (
           <span className="body-sm-text font-medium text-text-primary">{label}</span>
         ) : null}
-        <div className="relative">
+        <div className="relative min-w-0">
           <select
             ref={ref}
             className={cn(
